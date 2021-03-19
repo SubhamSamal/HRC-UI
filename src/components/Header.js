@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core';
 import { pxToVw } from '../utils/theme'
 import { pxToVh } from '../utils/theme'
 import clsx from "clsx"; // for multiple classes
+import '../App.css';
 const useStyles = makeStyles({
   header2 : {
     top: `${pxToVh(21.61)}`,
