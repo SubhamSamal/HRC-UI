@@ -1,4 +1,4 @@
-import {ReactComponent as Companylogo} from '../assets/companyLogo1.svg'
+import {ReactComponent as Companylogo} from '../assets/companyLogo.svg'
 import {ReactComponent as Hrclogo} from '../assets/logo.svg'
 import { makeStyles } from '@material-ui/core';
 import { pxToVw } from '../utils/theme'
