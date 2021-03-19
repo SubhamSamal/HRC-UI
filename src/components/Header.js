@@ -3,7 +3,7 @@ import {ReactComponent as Hrclogo} from '../assets/logo.svg'
 import { makeStyles } from '@material-ui/core';
 import { pxToVw } from '../utils/theme'
 import { pxToVh } from '../utils/theme'
-import clsx from "clsx"; // for multiple classes
+import clsx from "clsx";
 import '../App.css';
 const useStyles = makeStyles({
   header2 : {
