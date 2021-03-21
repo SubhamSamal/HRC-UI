@@ -4,15 +4,88 @@ import { pxToRem } from "../../utils/theme";
 import { pxToVw } from "../../utils/theme";
 import { pxToVh } from "../../utils/theme";
 import AddIcon from "@material-ui/icons/Add";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import React, { useState } from "react";
-import axios from 'axios';
-const useStyles = makeStyles({
+import { withStyles } from "@material-ui/core/styles";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import "../../App.css";
+import TextField from "@material-ui/core/TextField";
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+    backgroundColor: "#2A3E4C",
+    color: theme.palette.common.white,
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.common.white,
+  },
+});
+
+const DialogTitle = withStyles(styles)((props) => {
+  const { children, classes, onClose, ...other } = props;
+  return (
+    <MuiDialogTitle disableTypography className={classes.root} {...other}>
+      <Typography variant="h6">{children}</Typography>
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </MuiDialogTitle>
+  );
+});
+
+const DialogContent = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+    backgroundColor: "#2A3E4C",
+    color: theme.palette.common.white,
+  },
+}))(MuiDialogContent);
+
+const DialogActions = withStyles((theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(1),
+    backgroundColor: "#2A3E4C",
+    color: theme.palette.common.white,
+  },
+}))(MuiDialogActions);
+
+const useStyles = makeStyles((theme) => ({
+  clearButton: {
+    borderColor: "#14AFF1",
+    color: theme.palette.common.white,
+    textTransform: "none",
+    font: "Ubuntu",
+  },
+  deleteButton1: {
+    borderColor: "#14AFF1",
+    color: "#ffffff",
+    textTransform: "none",
+    borderRadius: pxToRem(10),
+  },
+
+  addButton2: {
+    backgroundColor: "#14AFF1",
+    color: theme.palette.common.white,
+    textTransform: "none",
+    font: "Ubuntu",
+  },
   add: {
     position: "absolute",
     width: `${pxToVw(99)}`,
@@ -26,36 +99,21 @@ const useStyles = makeStyles({
     opacity: "1",
     color: "#FFF",
   },
-});
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+    color: "#fff",
+  },
+}));
 
 const AddInvoice = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('abc');
-  const [custNum, setCustNum] = useState(789);
-  const [docId, setDocId] = useState(123);
-  const [invoiceAmt, setInvoiceAmt] = useState(100.5);
-  const [notes, setNotes] = useState('Lorem');
-  const [dueDate, setDueDate] = useState('2021-01-01');
-
-  const ChangeName = (event) => {
-    setName(event.target.value);
-  };
-  const ChangeDocID = (event) => {
-    setDocId(event.target.value);
-  };
-  const ChangeCustNum = (event) => {
-    setCustNum(event.target.value);
-  };
-  const ChangeInvoiceAmt = (event) => {
-    setInvoiceAmt(event.target.value);
-  };
-  const ChangeNotes = (event) => {
-    setNotes(event.target.value);
-  };
-  const ChangeDueDate = (event) => {
-    setDueDate(event.target.value);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,31 +123,27 @@ const AddInvoice = () => {
     setOpen(false);
   };
 
-  const handleSubmit = () => {
-    setName(document.querySelector('#name').value)
-    setDocId(document.querySelector('#docId').value)
-    setCustNum(document.querySelector('#custNo').value)
-    setInvoiceAmt(document.querySelector('#invAmt').value)
-    setNotes(document.querySelector('#notes').value)
-    setDueDate(document.querySelector('#dueDate').value)
-    // const a = String(name)
-    const data = {
-      "name_customer": name,
-      "cust_number": custNum,
-      "doc_id": docId,
-      "total_open_amount": invoiceAmt,
-      "due_in_date": dueDate,
-      "notes": notes
-    }
-    console.log("data is :",data)
-    axios.post('http://localhost:8080/1805170/add',data)
-    .then((data) => {
-      console.log(data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-    setOpen(false);
+  const [selectedDate, setSelectedDate] = React.useState(
+    new Date("2020-03-16T21:11:54")
+  );
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const textStyle = {
+    width: "20vh",
+    margin: "1.5vh",
+    display: "table-cell",
+    borderRadius: "1vh",
+    border: "0.1vh solid #356680",
+    backgroundColor: "#283A46",
+    color: "white",
+    height: "4vh",
+  };
+
+  const labelStyle = {
+    display: "table-cell",
   };
   return (
     <div>
@@ -102,86 +156,110 @@ const AddInvoice = () => {
         Add
       </Button>
       <Dialog
-        open={open}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title"
+        aria-labelledby="customized-dialog-title"
+        open={open}
+        maxWidth="false"
       >
-        <DialogTitle id="form-dialog-title">AddInvoice</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            value={name}
-            onChange={ChangeName}
-            label="Customer Name"
-            type="text"
-            fullWidth
-            required="true"
-            className="field"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="docId"
-            value={docId}
-            onChange={ChangeDocID}
-            label="Doc id"
-            type="text"
-            fullWidth
-            className="field"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="custNo"
-            value={custNum}
-            onChange={ChangeCustNum}
-            label="Customer Number"
-            type="text"
-            fullWidth
-            className="field"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="invAmt"
-            value={invoiceAmt}
-            onChange={ChangeInvoiceAmt}
-            label="Invoice Amount"
-            type="text"
-            fullWidth
-            className="field"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="notes"
-            value={notes}
-            onChange={ChangeNotes}
-            label="notes"
-            type="text"
-            fullWidth
-            className="field"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="dueDate"
-            value={dueDate}
-            onChange={ChangeDueDate}
-            label="Due Date"
-            type="text"
-            fullWidth
-            className="field"
-          />
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Add Invoice
+        </DialogTitle>
+        <DialogContent dividers>
+          <div
+            style={{
+              width: "55%",
+              float: "left",
+              fontSize: "2vh",
+              display: "table",
+            }}
+          >
+            <div style={{ display: "table-row" }}>
+              <label style={{ ...labelStyle }}>
+                Customer Name<span style={{ color: "#FF5B5B" }}> *</span>
+              </label>
+              <input type="text" style={{ ...textStyle }} required></input>
+            </div>
+
+            <div style={{ display: "table-row" }}>
+              <label style={{ ...labelStyle }}>
+                Customer No.<span style={{ color: "#FF5B5B" }}> *</span>
+              </label>
+              <input type="text" style={{ ...textStyle }} required></input>
+            </div>
+
+            <div style={{ display: "table-row" }}>
+              <label style={{ ...labelStyle }}>
+                Invoice No.<span style={{ color: "#FF5B5B" }}> *</span>
+              </label>
+              <input type="text" style={{ ...textStyle }} required></input>
+            </div>
+
+            <div style={{ display: "table-row" }}>
+              <label style={{ ...labelStyle }}>
+                Invoice Amount<span style={{ color: "#FF5B5B" }}> *</span>
+              </label>
+              <input type="text" style={{ ...textStyle }} required></input>
+            </div>
+          </div>
+
+          <div
+            style={{
+              width: "40%",
+              float: "right",
+              fontSize: "2vh",
+              display: "table",
+            }}
+          >
+            <div style={{ display: "table-row" }}>
+              <label style={{ ...labelStyle }}>
+                Due Date<span style={{ color: "#FF5B5B" }}> *</span>
+              </label>
+              <form className={classes.container} noValidate>
+                <TextField
+                  id="date"
+                  label="Birthday"
+                  type="date"
+                  defaultValue="2021-03-21"
+                  color = "primary"
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </form>
+            </div>
+
+            <div style={{ display: "table-row" }}>
+              <label
+                for="textarea"
+                style={{ ...labelStyle, verticalAlign: "top" }}
+              >
+                Notes
+              </label>
+              <textarea
+                id="textarea"
+                style={{ ...textStyle, height: "17vh" }}
+              ></textarea>
+            </div>
+          </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+          <Button
+            variant="outlined"
+            autoFocus
+            onClick={handleClose}
+            className={classes.clearButton}
+            color="primary.light"
+          >
+            Clear
           </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
+          <Button
+            variant="outlined"
+            autoFocus
+            onClick={handleClose}
+            className={classes.addButton2}
+          >
+            Add
           </Button>
         </DialogActions>
       </Dialog>
