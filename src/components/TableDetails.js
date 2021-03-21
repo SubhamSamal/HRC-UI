@@ -37,11 +37,12 @@ const useStyles = makeStyles({
   },
   tablewrap: {
     position:"relative",
-    height: `${pxToVh(760)}`,
+    height: `${pxToVh(765)}`,
     borderRadius: `${pxToRem(6)}`,
   },
   table: {
     position: "absolute",
+    height: `${pxToVh(770)}`,
     width: `${pxToVw(1785)}`,
     left: `${pxToVw(30)}`,
     background: "transparent",
