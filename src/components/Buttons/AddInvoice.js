@@ -123,14 +123,6 @@ const AddInvoice = () => {
     setOpen(false);
   };
 
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2020-03-16T21:11:54")
-  );
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
   const textStyle = {
     width: "20vh",
     margin: "1.5vh",
