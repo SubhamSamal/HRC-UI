@@ -31,9 +31,30 @@ const useStyles = makeStyles({
 const AddInvoice = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('Cat in the Hat');
-  const handleChange = (event) => {
+  const [name, setName] = useState('abc');
+  const [custNum, setCustNum] = useState(789);
+  const [docId, setDocId] = useState(123);
+  const [invoiceAmt, setInvoiceAmt] = useState(100.5);
+  const [notes, setNotes] = useState('Lorem');
+  const [dueDate, setDueDate] = useState('2021-01-01');
+
+  const ChangeName = (event) => {
     setName(event.target.value);
+  };
+  const ChangeDocID = (event) => {
+    setDocId(event.target.value);
+  };
+  const ChangeCustNum = (event) => {
+    setCustNum(event.target.value);
+  };
+  const ChangeInvoiceAmt = (event) => {
+    setInvoiceAmt(event.target.value);
+  };
+  const ChangeNotes = (event) => {
+    setNotes(event.target.value);
+  };
+  const ChangeDueDate = (event) => {
+    setDueDate(event.target.value);
   };
 
   const handleClickOpen = () => {
@@ -41,6 +62,33 @@ const AddInvoice = () => {
   };
 
   const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSubmit = () => {
+    setName(document.querySelector('#name').value)
+    setDocId(document.querySelector('#docId').value)
+    setCustNum(document.querySelector('#custNo').value)
+    setInvoiceAmt(document.querySelector('#invAmt').value)
+    setNotes(document.querySelector('#notes').value)
+    setDueDate(document.querySelector('#dueDate').value)
+    // const a = String(name)
+    const data = {
+      "name_customer": name,
+      "cust_number": custNum,
+      "doc_id": docId,
+      "total_open_amount": invoiceAmt,
+      "due_in_date": dueDate,
+      "notes": notes
+    }
+    console.log("data is :",data)
+    axios.post('http://localhost:8080/1805170/add',data)
+    .then((data) => {
+      console.log(data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
     setOpen(false);
   };
   return (
@@ -65,50 +113,75 @@ const AddInvoice = () => {
             margin="dense"
             id="name"
             value={name}
-            onChange={handleChange}
-            label="Email Address"
-            type="email"
+            onChange={ChangeName}
+            label="Customer Name"
+            type="text"
             fullWidth
             required="true"
+            className="field"
           />
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            value={name}
-            onChange={handleChange}
-            label="Email Address"
-            type="email"
+            id="docId"
+            value={docId}
+            onChange={ChangeDocID}
+            label="Doc id"
+            type="text"
             fullWidth
+            className="field"
           />
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            id="custNo"
+            value={custNum}
+            onChange={ChangeCustNum}
+            label="Customer Number"
+            type="text"
             fullWidth
+            className="field"
           />
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            id="invAmt"
+            value={invoiceAmt}
+            onChange={ChangeInvoiceAmt}
+            label="Invoice Amount"
+            type="text"
             fullWidth
+            className="field"
           />
           <TextField
             autoFocus
             margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
+            id="notes"
+            value={notes}
+            onChange={ChangeNotes}
+            label="notes"
+            type="text"
             fullWidth
+            className="field"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="dueDate"
+            value={dueDate}
+            onChange={ChangeDueDate}
+            label="Due Date"
+            type="text"
+            fullWidth
+            className="field"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
+          </Button>
+          <Button onClick={handleSubmit} color="primary">
+            Submit
           </Button>
         </DialogActions>
       </Dialog>
