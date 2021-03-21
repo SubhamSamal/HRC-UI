@@ -3,6 +3,7 @@ import { pxToVw } from '../utils/theme'
 import { pxToVh } from '../utils/theme'
 import { pxToRem } from '../utils/theme'
 import ButtonRow from './ButtonRow'
+import TableDetails from './TableDetails'
 const useStyles = makeStyles({
     TableContainer : {
         position : "absolute",
@@ -30,6 +31,7 @@ const TableContainer = () => {
             <div className={classes.ButtonRow}>
             <ButtonRow />
             </div>
+            <TableDetails />
         </div>
     )
 }

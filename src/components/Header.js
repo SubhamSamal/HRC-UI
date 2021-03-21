@@ -7,7 +7,7 @@ import clsx from "clsx";
 import '../App.css';
 const useStyles = makeStyles({
   header2 : {
-    top: `${pxToVh(21.61)}`,
+    top: `${pxToVh(20)}`,
     height: `${pxToVh(50)}`,
   },
 companylogo: {

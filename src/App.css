@@ -1,10 +1,7 @@
-.App {
-  text-align: center;
-}
 .main{
   display: flex;
   flex-direction: row;
-  background-color: #58687E;
+  background: transparent radial-gradient(closest-side at 50% 50%, #58687E 0%, #39495E 100%) 0% 0% no-repeat padding-box;
   width: 100vw;
   height: 100vh;
 }
@@ -14,5 +11,5 @@
   justify-content: center;
   position: fixed;
   width: 100vw;
-  background-color: #58687E;
+  background: transparent;
 }
