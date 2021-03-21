@@ -15,6 +15,7 @@ const useStyles = makeStyles({
   },
   delete: {
     position: "absolute",
+    top: `${pxToVh(0)}`,
     width: `${pxToVw(123)}`,
     height: `${pxToVh(45)}`,
     right: `${pxToVw(358)}`,

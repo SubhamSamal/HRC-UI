@@ -1,6 +1,7 @@
 import useAxios from "axios-hooks";
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from "@material-ui/core";
-// import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { CircularProgress } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import Table from "@material-ui/core/Table";
@@ -9,11 +10,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
 import "../App.css";
 import { pxToVw } from "../utils/theme";
 import { pxToVh } from "../utils/theme";
 import ErrorIcon from "@material-ui/icons/Error";
+import { pxToRem } from '../utils/theme'
 
 const useStyles = makeStyles({
   circularprogressor: {
@@ -34,23 +35,26 @@ const useStyles = makeStyles({
     left: `${pxToVw(650)}`,
     color: "#FFFFFF",
   },
+  tablewrap: {
+    position:"relative",
+    height: `${pxToVh(760)}`,
+    borderRadius: `${pxToRem(6)}`,
+  },
   table: {
     position: "absolute",
-    top: `${pxToVh(100)}`,
+    width: `${pxToVw(1785)}`,
     left: `${pxToVw(30)}`,
     background: "transparent",
-    width: `${pxToVw(1800)}`,
-    bottom: `${pxToVh(30)}`,
     border: "none",
   },
   tableheadcell: {
     color: "#97A1A9",
-    font: "normal normal normal 18px/21px Ubuntu",
+    font: "normal normal normal 20px/24px Ubuntu",
   },
   checkbox: {
     color: "#97A1A9",
     "&$checked": {
-      color: "#14AFF1",
+      background: "#14AFF1",
     },
     checked: {},
   },
@@ -66,10 +70,37 @@ const useStyles = makeStyles({
   },
 });
 const TableDetails = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 100;
   const classes = useStyles();
-  const [{ data, loading, error }, refetch] = useAxios({
+
+  useEffect(() => {
+    fetch(`http://localhost:8080/1805170/get?Offset=${currentPage}&Limit=${limit}`)
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json);
+            setData(json);
+            setCurrentPage((curr) => curr + limit); 
+        });
+}, []);
+
+const fetchmoreData = () => {
+    fetch(`http://localhost:8080/1805170/get?Offset=${currentPage}&Limit=${limit}`)
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json);
+            setData((curr) => curr.concat(json));
+            setCurrentPage((curr) => {
+                curr === 34 && setHasMore(false);
+                return curr + limit;
+            });
+        });
+};
+  const [{ loading, error }] = useAxios({
     method: "GET",
-    url: "http://localhost:8080/1805170/get",
+    url: "http://localhost:8080/1805170/get?Offset=1&Limit=1",
   });
   if (loading)
     return (
@@ -90,11 +121,31 @@ const TableDetails = () => {
     );
 
   return (
-    <TableContainer component={Paper}>
+    <div>
+    <InfiniteScroll
+    dataLength={data.length}
+    next={fetchmoreData}
+    hasMore={hasMore}
+    endMessage = { 
+      <h3>Scrolling ends here</h3>
+    }
+    style={{ marginTop: `${pxToVh(100)}` }}
+    // loader={
+    //   <div
+    //     style={{
+    //       textAlign: "center",
+    //       marginTop: "10px",
+    //       marginBottom: "10px",
+    //     }}
+    //   >
+    //     <CircularProgress disableShrink />;
+    //   </div>
+    // }
+  >
+    <TableContainer className={classes.tablewrap}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow className={classes.tablerow}>
-            {console.log(data, loading, error, refetch)}
             <TableCell className={classes.tableheadcell}>
               <Checkbox className={classes.checkbox} />
             </TableCell>
@@ -158,7 +209,9 @@ const TableDetails = () => {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+      </TableContainer>
+    </InfiniteScroll>
+    </div>
   );
 };
 export default TableDetails;

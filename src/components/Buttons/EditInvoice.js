@@ -16,6 +16,7 @@ const useStyles = makeStyles({
   },
   edit: {
     position: "absolute",
+    top: `${pxToVh(0)}`,
     width: `${pxToVw(102)}`,
     height: `${pxToVh(45)}`,
     right: `${pxToVw(499)}`,
