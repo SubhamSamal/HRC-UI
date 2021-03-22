@@ -15,6 +15,17 @@ import { pxToVw } from "../utils/theme";
 import { pxToVh } from "../utils/theme";
 import ErrorIcon from "@material-ui/icons/Error";
 import { pxToRem } from '../utils/theme'
+import { withStyles } from "@material-ui/core/styles";
+
+const CustomCheckbox = withStyles({
+  root: {
+    color: "#97A1A9",
+    '&$checked': {
+      color: "#14AFF1",
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 
 const useStyles = makeStyles({
   circularprogressor: {
@@ -52,13 +63,6 @@ const useStyles = makeStyles({
     color: "#97A1A9",
     font: "normal normal normal 20px/24px Ubuntu",
   },
-  checkbox: {
-    color: "#97A1A9",
-    "&$checked": {
-      background: "#14AFF1",
-    },
-    checked: {},
-  },
   tablebodycell: {
     color: "#FFF",
     font: "normal normal normal 18px/21px Ubuntu",
@@ -70,6 +74,8 @@ const useStyles = makeStyles({
     },
   },
 });
+
+
 const TableDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -131,24 +137,13 @@ const fetchmoreData = () => {
       <h3>Scrolling ends here</h3>
     }
     style={{ marginTop: `${pxToVh(100)}` }}
-    // loader={
-    //   <div
-    //     style={{
-    //       textAlign: "center",
-    //       marginTop: "10px",
-    //       marginBottom: "10px",
-    //     }}
-    //   >
-    //     <CircularProgress disableShrink />;
-    //   </div>
-    // }
   >
     <TableContainer className={classes.tablewrap}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow className={classes.tablerow}>
             <TableCell className={classes.tableheadcell}>
-              <Checkbox className={classes.checkbox} />
+              <CustomCheckbox />
             </TableCell>
             <TableCell className={classes.tableheadcell} align="left">
               Customer Name
@@ -178,9 +173,9 @@ const fetchmoreData = () => {
         </TableHead>
         <TableBody>
           {data?.map((header, i) => (
-            <TableRow key={i} className={classes.tablerow}>
+            <TableRow key={i} className={classes.tablerow} >
               <TableCell className={classes.tablebodycell}>
-                <Checkbox className={classes.checkbox} />
+              <CustomCheckbox />
               </TableCell>
               <TableCell className={classes.tablebodycell} align="center">
                 {header.cust_number}
