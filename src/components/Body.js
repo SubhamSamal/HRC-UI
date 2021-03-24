@@ -1,6 +1,7 @@
 import { makeStyles } from '@material-ui/core';
 import { pxToVw } from '../utils/theme'
 import { pxToVh } from '../utils/theme'
+import { pxToRem } from '../utils/theme'
 const useStyles = makeStyles({
 body : {
     position : "absolute",
@@ -10,7 +11,7 @@ body : {
     height: `${pxToVh(31)}`,
     color: "#FFF",
     textAlign: "left",
-    font: "normal normal normal 28px/32px Ubuntu",
+    font: `normal normal normal ${pxToRem(28)}/${pxToRem(32)} Ubuntu`,
     opacity: "1",
     },
 })

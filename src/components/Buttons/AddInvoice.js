@@ -15,6 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import "../../App.css";
 import TextField from "@material-ui/core/TextField";
+import axios from 'axios';
 
 const styles = (theme) => ({
   root: {
@@ -123,6 +124,29 @@ const AddInvoice = () => {
     setOpen(false);
   };
 
+  const handleSubmit = () => {
+    const name_customer = document.querySelector('#name_customer').value;
+    const cust_number = document.querySelector('#cust_number').value;
+    const doc_id = document.querySelector('#doc_id').value;
+    const total_open_amount = document.querySelector('#total_open_amount').value;
+    const due_in_date = document.querySelector('#due_in_date').value;
+    const notes = document.querySelector('#notes').value;
+    axios.post('http://localhost:8080/1805170/add', {
+      name_customer: name_customer,
+      cust_number: cust_number,
+      doc_id: doc_id,
+      total_open_amount: total_open_amount,
+      due_in_date: due_in_date,
+      notes: notes
+    })
+    .then((response) => {
+      console.log(response);
+    }, (error) => {
+      console.log(error);
+    });
+    setOpen(false);
+  }
+  // useEffect({return },[count])
   const textStyle = {
     width: "20vh",
     margin: "1.5vh",
@@ -169,28 +193,28 @@ const AddInvoice = () => {
               <label style={{ ...labelStyle }}>
                 Customer Name<span style={{ color: "#FF5B5B" }}> *</span>
               </label>
-              <input type="text" style={{ ...textStyle }} required></input>
+              <input id="name_customer" type="text" style={{ ...textStyle }} required></input>
             </div>
 
             <div style={{ display: "table-row" }}>
               <label style={{ ...labelStyle }}>
                 Customer No.<span style={{ color: "#FF5B5B" }}> *</span>
               </label>
-              <input type="text" style={{ ...textStyle }} required></input>
+              <input id="cust_number" type="text" style={{ ...textStyle }} required></input>
             </div>
 
             <div style={{ display: "table-row" }}>
               <label style={{ ...labelStyle }}>
                 Invoice No.<span style={{ color: "#FF5B5B" }}> *</span>
               </label>
-              <input type="text" style={{ ...textStyle }} required></input>
+              <input id="doc_id" type="text" style={{ ...textStyle }} required></input>
             </div>
 
             <div style={{ display: "table-row" }}>
               <label style={{ ...labelStyle }}>
                 Invoice Amount<span style={{ color: "#FF5B5B" }}> *</span>
               </label>
-              <input type="text" style={{ ...textStyle }} required></input>
+              <input id="total_open_amount" type="text" style={{ ...textStyle }} required></input>
             </div>
           </div>
 
@@ -208,7 +232,7 @@ const AddInvoice = () => {
               </label>
               <form className={classes.container} noValidate>
                 <TextField
-                  id="date"
+                  id="due_in_date"
                   label="Birthday"
                   type="date"
                   defaultValue="2021-03-21"
@@ -229,7 +253,7 @@ const AddInvoice = () => {
                 Notes
               </label>
               <textarea
-                id="textarea"
+                id="notes"
                 style={{ ...textStyle, height: "17vh" }}
               ></textarea>
             </div>
@@ -248,7 +272,7 @@ const AddInvoice = () => {
           <Button
             variant="outlined"
             autoFocus
-            onClick={handleClose}
+            onClick={handleSubmit}
             className={classes.addButton2}
           >
             Add

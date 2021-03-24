@@ -21,7 +21,6 @@ const Header = () => {
     <div className={clsx(classes.header2,"header")}>
           < Companylogo className={classes.companylogo}/>
           < Hrclogo />
-          
     </div>
   );
 };
